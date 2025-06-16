@@ -1,0 +1,47 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Authenticate with Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # 3. Set up Google Cloud SDK
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: turnkey-crowbar-462209-v5
+
+      # 4. Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA .
+
+      # 5. Push Docker image to GCR
+      - name: Push Docker Image
+        run: |
+          docker push gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA
+
+      # 6. Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy trash-checker \
+            --image gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA \
+            --region europe-central2 \
+            --allow-unauthenticated \
+            --set-env-vars EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},TZ=Europe/Warsaw
+

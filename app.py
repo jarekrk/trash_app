@@ -90,7 +90,7 @@ def check_trash_schedule(trash_dict, name):
 def run_check():
     check_trash_schedule(trash_mix, "Mieszane")
     check_trash_schedule(trash_seg, "Segregowane")
-    check_trash_schedule(trash_bio, "Bio")
+    check_trash_schedule(trash_bio, "Bio!!")
     return "Trash check completed!"
 
 if __name__ == "__main__":
