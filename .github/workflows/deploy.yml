@@ -30,7 +30,12 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA .
-
+      
+      # 4.5 logowanie do docker registry
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker gcr.io
+      
       # 5. Push Docker image to GCR
       - name: Push Docker Image
         run: |
