@@ -82,7 +82,7 @@ def check_trash_schedule(trash_dict, name):
             if hour == 20:
                 if day == trash_day - 1:
                     send_email(f"Jutro wywóz śmieci: {name}", f"Jutro ({mon} {trash_day}) będzie wywóz śmieci: {name}.")
-            if hour == 9:
+            if hour == 6:
                 if day == trash_day:
                     send_email(f"Dzisiaj wywóz śmieci: {name}", f"Dzisiaj ({mon} {trash_day}) jest wywóz śmieci: {name}.")
 
