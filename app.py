@@ -93,6 +93,27 @@ def run_check():
     check_trash_schedule(trash_bio, "Bio!!")
     return "Trash check completed!"
 
+
+@app.route("/check")
+def current_month_trash():
+    today = datetime.today()
+    mon = today.strftime("%b")
+    html_content = (
+        f'<h2>Odbiór odpadów w miesiącu <strong>{mon}</strong></h2>'
+        f'<table border="1" style="border-collapse: collapse; text-align: center;">'
+        f'<thead>'
+        f'<tr><th>Rodzaj</th><th>Daty odbioru</th></tr>'
+        f'</thead>'
+        f'<tbody>'
+        f'<tr><td>Śmieci BIO</td><td>{trash_bio[mon]}</td></tr>'
+        f'<tr><td>Śmieci MIX</td><td>{trash_mix[mon]}</td></tr>'
+        f'<tr><td>Śmieci SEGREGOWANE</td><td>{trash_seg[mon]}</td></tr>'
+        f'</tbody>'
+        f'</table>'
+    )
+    return html_content
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
 
