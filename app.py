@@ -47,6 +47,8 @@ trash_bio={"Jan":[9],
            "Dec":[4]
            }
 
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 # Email credentials
 sender_email = "janekbez@yahoo.com"
 receiver_emails = ["jrozentalski@gmail.com", "quchasia@gmail.com"]
@@ -98,21 +100,41 @@ def run_check():
 def current_month_trash():
     today = datetime.today()
     mon = today.strftime("%b")
-    html_content = (
-        f'<h2>Odbiór odpadów w miesiącu <strong>{mon}</strong></h2>'
-        f'<table border="1" style="border-collapse: collapse; text-align: center;">'
-        f'<thead>'
-        f'<tr><th>Rodzaj</th><th>Daty odbioru</th></tr>'
-        f'</thead>'
-        f'<tbody>'
-        f'<tr><td>Śmieci BIO</td><td>{trash_bio[mon]}</td></tr>'
-        f'<tr><td>Śmieci MIX</td><td>{trash_mix[mon]}</td></tr>'
-        f'<tr><td>Śmieci SEGREGOWANE</td><td>{trash_seg[mon]}</td></tr>'
-        f'</tbody>'
-        f'</table>'
-    )
-    return html_content
+    result = {
+        "month": mon,
+        "bio": trash_bio[mon],
+        "mix": trash_mix[mon],
+        "seg": trash_seg[mon]
+    }
 
+    return render_template("check.html", result=result)
+
+@app.route('/other', methods=['GET', 'POST'])
+def other():
+    if request.method == 'POST':
+        user_input = request.form.get('month')
+
+        if user_input == "NO":
+            return render_template("other.html", message="Dziękuję! Do zobaczenia.", result=None, months=months)
+
+        try:
+            check = int(user_input)
+            if 1 <= check <= 12:
+                month_name = months[check - 1]
+                result = {
+                    "month": month_name,
+                    "bio": trash_bio[month_name],
+                    "mix": trash_mix[month_name],
+                    "seg": trash_seg[month_name]
+                }
+                return render_template("other.html", message=None, result=result, months=months)
+            else:
+                return render_template("other.html", message="Błędny numer miesiąca.", result=None, months=months)
+        except ValueError:
+            return render_template("other.html", message="Błąd! Wybierz poprawny miesiąc.", result=None, months=months)
+
+    # GET request
+    return render_template("other.html", message=None, result=None, months=months)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
