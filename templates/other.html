@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Sprawdź harmonogram</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="box">
+        {% if message %}
+            <h2>{{ message }}</h2>
+            <a href="{{ url_for('other') }}">Wróć</a>
+        {% elif result %}
+            <h2>Odbiór odpadów w miesiącu <strong>{{ result.month }}</strong></h2>
+            <table class="trash-table">
+                <thead>
+                    <tr>
+                        <th>Rodzaj</th>
+                        <th>Daty odbioru</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Śmieci BIO</td>
+                        <td>{{ result.bio }}</td>
+                    </tr>
+                    <tr>
+                        <td>Śmieci MIX</td>
+                        <td>{{ result.mix }}</td>
+                    </tr>
+                    <tr>
+                        <td>Śmieci SEGREGOWANE</td>
+                        <td>{{ result.seg }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="{{ url_for('other') }}">Sprawdź inny miesiąc</a>
+        {% else %}
+            <h2>Wybierz miesiąc lub zakończ:</h2>
+            <form method="POST">
+                <select name="month">
+                    {% for i in range(1, 13) %}
+                        <option value="{{ i }}">{{ i }} - {{ months[i-1] }}</option>
+                    {% endfor %}
+                    <option value="NO">NO - zakończ</option>
+                </select>
+                <input type="submit" value="Wyślij">
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
+

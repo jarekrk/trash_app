@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Odbiór odpadów</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="box">
+        <h2>Odbiór odpadów w miesiącu <strong>{{ result.month }}</strong></h2>
+        <table class="trash-table">
+            <thead>
+                <tr>
+                    <th>Rodzaj</th>
+                    <th>Daty odbioru</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Śmieci BIO</td>
+                    <td>{{ result.bio }}</td>
+                </tr>
+                <tr>
+                    <td>Śmieci MIX</td>
+                    <td>{{ result.mix }}</td>
+                </tr>
+                <tr>
+                    <td>Śmieci SEGREGOWANE</td>
+                    <td>{{ result.seg }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/other">Sprawdź inny miesiąc</a>
+    </div>
+</body>
+</html>
+
