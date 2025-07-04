@@ -48,5 +48,4 @@ jobs:
             --image gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA \
             --region europe-central2 \
             --allow-unauthenticated \
-            --set-env-vars EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},TZ=Europe/Warsaw
-
+            --set-env-vars EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},RECEIVER_EMAILS=${{ secrets.RECEIVER_EMAILS }},TZ=Europe/Warsaw

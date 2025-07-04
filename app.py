@@ -39,7 +39,7 @@ trash_bio={"Jan":[9],
            "Apr":[7,22],
            "May":[6,20],
            "Jun":[3,17],
-           "Jul":[1,15,29],
+           "Jul":[4,15,29],
            "Aug":[12,26],
            "Sep":[9,23],
            "Oct":[7,21],
@@ -51,7 +51,7 @@ months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", 
 
 # Email credentials
 sender_email = "janekbez@yahoo.com"
-receiver_emails = ["jrozentalski@gmail.com", "quchasia@gmail.com"]
+receiver_emails = os.getenv("RECEIVER_EMAILS", "").split(",")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 # Flask app
@@ -84,7 +84,7 @@ def check_trash_schedule(trash_dict, name):
             if hour == 20:
                 if day == trash_day - 1:
                     send_email(f"Jutro wywóz śmieci: {name}", f"Jutro ({mon} {trash_day}) będzie wywóz śmieci: {name}.")
-            if hour == 6:
+            if hour == 12:
                 if day == trash_day:
                     send_email(f"Dzisiaj wywóz śmieci: {name}", f"Dzisiaj ({mon} {trash_day}) jest wywóz śmieci: {name}.")
 
