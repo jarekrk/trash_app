@@ -41,6 +41,13 @@ jobs:
         run: |
           docker push gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA
 
+      # 5.5 Generate env variable
+      - name: Generate env.yaml
+        run: |
+          echo "EMAIL_PASSWORD: \"${{ secrets.EMAIL_PASSWORD }}\"" > env.yaml
+          echo "RECEIVER_EMAILS: \"${{ secrets.RECEIVER_EMAILS }}\"" >> env.yaml
+          echo "TZ: \"Europe/Warsaw\"" >> env.yaml
+
       # 6. Deploy to Cloud Run
       - name: Deploy to Cloud Run
         run: |
@@ -48,5 +55,5 @@ jobs:
             --image gcr.io/turnkey-crowbar-462209-v5/trash-checker:$GITHUB_SHA \
             --region europe-central2 \
             --allow-unauthenticated \
-            --set-env-vars EMAIL_PASSWORD="${{ secrets.EMAIL_PASSWORD }}",RECEIVER_EMAILS="${{ secrets.RECEIVER_EMAILS }}",TZ=Europe/Warsaw
+            --env-vars-file env.yaml
 
